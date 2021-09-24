@@ -1,7 +1,7 @@
 CFLAGS=-g -Wall
 # CFLAGS+=-DDEBUGLOG
 
-LUAINC?=-I/usr/local/include
+LUAINC?=-I./3rd/lua
 
 ifeq ($(OS),Windows_NT)
   LIBS=-lwinmm
@@ -14,7 +14,11 @@ else
   LIBS=-lpthread
 endif
 
-all : ltask.$(SO)
+.PHONY: lua
+all : lua ltask.$(SO)
+
+lua:
+	cd 3rd/lua && $(MAKE)
 
 SRCS=\
  src/ltask.c \
@@ -35,5 +39,6 @@ ltask.$(SO) : $(SRCS)
 
 clean :
 	rm -rf *.$(SO)
+	cd 3rd/lua && $(MAKE) clean
 
 
